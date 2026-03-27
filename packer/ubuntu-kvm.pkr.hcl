@@ -1,1 +1,70 @@
+packer {
+  required_plugins {
+    qemu = {
+      source  = "github.com/hashicorp/qemu"
+      version = "~> 1"
+    }
+  }
+}
 
+variable "iso_url" {
+  type = string
+}
+
+variable "iso_checksum" {
+  type = string
+}
+
+source "qemu" "ubuntu" {
+  accelerator      = "none"
+  format           = "qcow2"
+  disk_interface   = "virtio"
+  disk_size        = "8192"
+  memory           = 2048
+  cpus             = 2
+  headless         = true
+  communicator     = "ssh"
+  ssh_username     = "packer"
+  ssh_password     = "packer"
+  ssh_timeout      = "30m"
+  vm_name          = "ubuntu-baked-demo"
+  output_directory = "output/ubuntu-kvm"
+
+  iso_url          = var.iso_url
+  iso_checksum     = var.iso_checksum
+
+  http_directory   = "http"
+
+  boot_wait = "5s"
+  boot_command = [
+    "c<wait>",
+    "linux /casper/vmlinuz autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<enter><wait>",
+    "initrd /casper/initrd<enter><wait>",
+    "boot<enter>"
+  ]
+
+  shutdown_command = "echo 'packer' | sudo -S shutdown -P now"
+}
+
+build {
+  name = "ubuntu-kvm-image"
+
+  sources = [
+    "source.qemu.ubuntu"
+  ]
+
+  provisioner "shell" {
+    script = "scripts/baseline.sh"
+  }
+
+  provisioner "shell-local" {
+    inline = [
+      "mkdir -p output",
+      "date -u +%Y-%m-%dT%H:%M:%SZ > output/build-timestamp.txt"
+    ]
+  }
+
+  post-processor "manifest" {
+    output = "ubuntu-kvm.manifest.json"
+  }
+}
