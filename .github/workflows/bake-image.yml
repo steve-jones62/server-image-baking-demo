@@ -24,14 +24,23 @@ jobs:
             qemu-utils \
             unzip \
             curl
-
-      - name: Install Packer
+    
+      - name: Install system dependencies
         run: |
-          PACKER_VERSION="1.11.2"
-          curl -fsSL "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -o packer.zip
-          unzip -o packer.zip
-          sudo mv packer /usr/local/bin/packer
-          packer version
+          sudo apt-get update
+          sudo apt-get install -y \
+            qemu-system-x86 \
+            qemu-utils \
+            unzip \
+            curl
+
+      - name: Setup Packer
+        uses: hashicorp/setup-packer@v3
+        with:
+          version: "1.11.2"
+
+      - name: Verify Packer
+        run: packer version
 
       - name: Packer init
         working-directory: packer
