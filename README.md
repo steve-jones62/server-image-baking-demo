@@ -1,6 +1,7 @@
 # server-image-baking-demo
 
 Repo Layout
+```
 server-image-baking-demo/
 ├── .github/
 │   └── workflows/
@@ -13,6 +14,7 @@ server-image-baking-demo/
 │       ├── baseline.sh
 │       └── validate.sh
 └── README.md
+```
 
 
 How the flow works
