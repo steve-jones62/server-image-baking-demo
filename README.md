@@ -18,6 +18,7 @@ server-image-baking-demo/
 
 
 How the flow works
+```
 Manual workflow dispatch or Git push
   ↓
 GitHub Actions
@@ -37,5 +38,6 @@ Packer captures qcow2 image
 validate.sh runs against build outputs
   ↓
 GitHub uploads qcow2 + manifest as artifacts
+```
 
 Packer uses builders to create a machine, provisioners to configure it after boot, and optional local steps can run on the build runner. GitHub Actions supports YAML workflows and artifact upload/download.
