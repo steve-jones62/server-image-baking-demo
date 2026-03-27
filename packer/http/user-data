@@ -4,7 +4,7 @@ autoinstall:
   identity:
     hostname: ubuntu-baked-demo
     username: packer
-    password: "$6$rounds=4096$abcdefghijklmnop$4Oe8oS7VQ7x0Yg2Q3m6f9gq4gk9wV0L5A0v9dKx5vWmO4eM0Q2W3H7S8m4QnH6sYQ8XjM6aS1gYv0dYxv9Y0."
+    password: "$6$rounds=4096$oLUMm9a708XyKwn3$2.1wJg0f0pp/b/pi/XBsLEkiH3q8622OVDycGAp3ucxpXMoQmgAjRuxI4Bu5ojwOL7MR10Z26MLXc483NCU7T1."
   ssh:
     install-server: true
     allow-pw: true
