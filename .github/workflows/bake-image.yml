@@ -1,0 +1,67 @@
+name: Bake Server Image
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [ "main" ]
+    paths:
+      - ".github/workflows/bake-image.yml"
+      - "packer/**"
+
+jobs:
+  bake:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Install system dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            qemu-system-x86 \
+            qemu-utils \
+            unzip \
+            curl
+
+      - name: Install Packer
+        run: |
+          PACKER_VERSION="1.11.2"
+          curl -fsSL "https://releases.hashicorp.com/packer/${PACKER_VERSION}/packer_${PACKER_VERSION}_linux_amd64.zip" -o packer.zip
+          unzip -o packer.zip
+          sudo mv packer /usr/local/bin/packer
+          packer version
+
+      - name: Packer init
+        working-directory: packer
+        run: packer init .
+
+      - name: Packer validate
+        working-directory: packer
+        run: |
+          packer validate \
+            -var "iso_url=https://releases.ubuntu.com/24.04/ubuntu-24.04-live-server-amd64.iso" \
+            -var "iso_checksum=sha256:KNOWN_GOOD_CHECKSUM_HERE" \
+            .
+
+      - name: Packer build
+        working-directory: packer
+        run: |
+          packer build \
+            -var "iso_url=https://releases.ubuntu.com/24.04/ubuntu-24.04-live-server-amd64.iso" \
+            -var "iso_checksum=sha256:KNOWN_GOOD_CHECKSUM_HERE" \
+            .
+
+      - name: Validate build outputs
+        working-directory: packer
+        run: bash scripts/validate.sh
+
+      - name: Upload baked image artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: baked-server-image
+          path: |
+            packer/output/**
+            packer/*.manifest.json
+          retention-days: 14
