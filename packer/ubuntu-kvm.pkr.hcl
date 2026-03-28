@@ -24,8 +24,9 @@ source "qemu" "ubuntu" {
   cpus             = 2
   headless         = true
   communicator     = "ssh"
-  ssh_username     = "packer"
-  ssh_timeout      = "15m"
+#  ssh_username     = "packer"
+  ssh_username     + "root"
+  ssh_timeout      = "10m"
   ssh_private_key_file = "http/packer"
   ssh_handshake_attempts = 20
   vm_name          = "ubuntu-baked-demo"
