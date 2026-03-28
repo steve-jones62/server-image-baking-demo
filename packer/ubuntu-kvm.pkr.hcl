@@ -35,13 +35,13 @@ source "qemu" "ubuntu" {
 
   http_directory   = "http"
 
-  boot_wait = "5s"
-  boot_command = [
-    "c<wait>",
-    "linux /casper/vmlinuz autoinstall ds='nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/' cloud-config-url=/dev/null ---<enter><wait>",
-    "initrd /casper/initrd<enter><wait>",
-    "boot<enter>"
-  ]
+boot_wait = "5s"
+boot_command = [
+  "c<wait>",
+  "linux /casper/vmlinuz autoinstall ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<enter><wait>",
+  "initrd /casper/initrd<enter><wait>",
+  "boot<enter>"
+]
 
   shutdown_command = "echo 'packer' | sudo -S shutdown -P now"
 }
