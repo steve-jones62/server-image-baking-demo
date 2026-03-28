@@ -66,10 +66,19 @@ jobs:
             .
 
       - name: Validate build outputs
+        if: always()
         working-directory: packer
         run: bash scripts/validate.sh
 
+      - name: Show Packer log tail
+        if: always()
+        working-directory: packer
+        run: |
+          echo "==== Last 200 lines of packer.log ===="
+          tail -n 200 packer.log || true
+
       - name: Upload baked image artifacts
+        if: always()
         uses: actions/upload-artifact@v4
         with:
           name: baked-server-image
