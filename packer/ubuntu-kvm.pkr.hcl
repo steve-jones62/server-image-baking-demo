@@ -26,7 +26,7 @@ source "qemu" "ubuntu" {
   communicator     = "ssh"
 #  ssh_username     = "packer"
   ssh_username     = "root"
-  ssh_timeout      = "10m"
+  ssh_timeout      = "15m"
   ssh_private_key_file = "http/packer"
   ssh_handshake_attempts = 20
   vm_name          = "ubuntu-baked-demo"
@@ -37,7 +37,7 @@ source "qemu" "ubuntu" {
 
   http_directory   = "http"
 
-boot_wait = "5s"
+boot_wait = "15s"
 boot_command = [
   "c<wait>",
   "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ---<enter><wait>",
@@ -45,7 +45,7 @@ boot_command = [
   "boot<enter>"
 ]
 
-  shutdown_command = "echo 'packer' | sudo -S shutdown -P now"
+  shutdown_command = "shutdown -P now"
 }
 
 build {
