@@ -26,7 +26,7 @@ source "qemu" "ubuntu" {
   communicator     = "ssh"
   ssh_username     = "packer"
   ssh_password     = "packer"
-  ssh_timeout      = "25m"
+  ssh_timeout      = "10m"
   ssh_handshake_attempts = 20
   vm_name          = "ubuntu-baked-demo"
   output_directory = "output/ubuntu-kvm"
