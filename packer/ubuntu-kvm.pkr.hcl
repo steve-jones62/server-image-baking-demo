@@ -25,7 +25,7 @@ source "qemu" "ubuntu" {
   headless         = true
   communicator     = "ssh"
 #  ssh_username     = "packer"
-  ssh_username     + "root"
+  ssh_username     = "root"
   ssh_timeout      = "10m"
   ssh_private_key_file = "http/packer"
   ssh_handshake_attempts = 20
