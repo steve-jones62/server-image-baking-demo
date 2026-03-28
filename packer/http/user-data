@@ -8,6 +8,9 @@ autoinstall:
   ssh:
     install-server: true
     allow-pw: true
+  late-commands:
+    - curtin in-target --target=/target -- /bin/bash -c "echo 'packer:packer' | chpasswd"
+    - curtin in-target --target=/target -- /bin/bash -c "printf 'PasswordAuthentication yes\n' > /etc/ssh/sshd_config.d/99-packer.conf"
   locale: en_US.UTF-8
   keyboard:
     layout: us
