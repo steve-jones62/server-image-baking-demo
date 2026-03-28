@@ -56,6 +56,9 @@ jobs:
       
       - name: Packer build
         working-directory: packer
+        env:
+          PACKER_LOG: "1"
+          PACKER_LOG_PATH: "packer.log"
         run: |
           packer build \
             -var "iso_url=https://releases.ubuntu.com/noble/ubuntu-24.04.4-live-server-amd64.iso" \
@@ -73,4 +76,5 @@ jobs:
           path: |
             packer/output/**
             packer/*.manifest.json
+            packer/packer.log
           retention-days: 14
