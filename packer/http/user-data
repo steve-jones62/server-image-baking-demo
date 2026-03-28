@@ -8,6 +8,13 @@ autoinstall:
   ssh:
     install-server: true
     allow-pw: true
+    disable_root: false
+  users:
+    - name: packer
+      passwd: "$6$rounds=4096$oLUMm9a708XyKwn3$2.1wJg0f0pp/b/pi/XBsLEkiH3q8622OVDycGAp3ucxpXMoQmgAjRuxI4Bu5ojwOL7MR10Z26MLXc483NCU7T1."
+      lock_passwd: false
+      shell: /bin/bash
+      sudo: ALL=(ALL) NOPASSWD:ALL
   locale: en_US.UTF-8
   keyboard:
     layout: us
