@@ -37,7 +37,7 @@ jobs:
       - name: Setup Packer
         uses: hashicorp/setup-packer@v3
         with:
-          version: "1.11.2"
+          version: "1.15.1"
 
       - name: Verify Packer
         run: packer version
