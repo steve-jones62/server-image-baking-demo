@@ -11,7 +11,7 @@ variable "iso_url" {
   type = string
 }
 
-variable "use_KVM {
+variable "use_KVM" {
   type = bool
   default = false
 }
