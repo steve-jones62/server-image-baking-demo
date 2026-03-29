@@ -22,7 +22,7 @@ source "qemu" "ubuntu" {
   disk_size        = "8192"
   memory           = 2048
   cpus             = 2
-  headless         = true
+  headless         = false
   qemuargs = [["-display","none"]]
   communicator     = "ssh"
 #  ssh_username     = "packer"
