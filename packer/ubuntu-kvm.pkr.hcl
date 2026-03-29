@@ -11,12 +11,17 @@ variable "iso_url" {
   type = string
 }
 
+variable "use_KVM {
+  type = bool
+  default = false
+}
+
 variable "iso_checksum" {
   type = string
 }
 
 source "qemu" "ubuntu" {
-  accelerator      = "none"
+  accelerator      = var.use_kvm ? "kvm" : "none"
   format           = "qcow2"
   disk_interface   = "virtio"
   disk_size        = "8192"
