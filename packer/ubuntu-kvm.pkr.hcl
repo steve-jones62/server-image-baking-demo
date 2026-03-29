@@ -52,7 +52,8 @@ source "qemu" "ubuntu" {
 boot_wait = "30s"
 boot_command = [
   "c<wait>",
-  "linux /casper/vmlinuz autoinstall ds=nocloud;s=/cdrom/ ---<enter><wait>",
+  # Adding systemd.mask=ssh to the kernel line -- an automated install does not need an interactive SSH session
+  "linux /casper/vmlinuz autoinstall ds=nocloud;s=/cdrom/ systemd.mask=ssh ---<enter><wait>",
   "initrd /casper/initrd<enter><wait>",
   "boot<enter>"
 ]
