@@ -23,6 +23,7 @@ source "qemu" "ubuntu" {
   memory           = 2048
   cpus             = 2
   headless         = true
+  qemuargs = [["-display","none"]]
   communicator     = "ssh"
 #  ssh_username     = "packer"
   ssh_username     = "root"
