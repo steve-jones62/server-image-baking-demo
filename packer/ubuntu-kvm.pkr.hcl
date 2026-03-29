@@ -27,9 +27,10 @@ source "qemu" "ubuntu" {
   communicator     = "ssh"
   ssh_username     = "packer"
   ssh_password     = "packer"
+  ssh_clear_authorized_keys = true
   ssh_timeout      = "60m"
 
-  pause_before_connecting = "5m"
+  pause_before_connecting = "25m"
 # ssh_private_key_file = "http/packer"
   ssh_handshake_attempts = 20
   vm_name          = "ubuntu-baked-demo"
@@ -50,8 +51,8 @@ boot_wait = "30s"
 boot_command = [
   "c<wait>",
   # Adding systemd.mask=ssh to the kernel line -- an automated install does not need an interactive SSH session
-  "linux /casper/vmlinuz autoinstall ds=nocloud;s=/cdrom/ systemd.mask=ssh ---<enter><wait>",
-  "initrd /casper/initrd<enter><wait>",
+  "linux /casper/vmlinuz autoinstall ds=nocloud;s=/cdrom/ systemd.mask=ssh ---<enter><wait5>",
+  "initrd /casper/initrd<enter><wait5>",
   "boot<enter>"
 ]
 
