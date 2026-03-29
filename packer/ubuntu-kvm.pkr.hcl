@@ -28,9 +28,11 @@ source "qemu" "ubuntu" {
     ["-serial", "stdio"]
   ]
   communicator     = "ssh"
-#  ssh_username     = "packer"
-  ssh_username     = "root"
-  ssh_timeout      = "15m"
+  ssh_username     = "packer"
+  ssh_password     = "packer"
+  ssh_timeout      = "60m"
+  ssh_handshake_timeout  = "15m"
+  pause_before_connecting = "5m"
   ssh_private_key_file = "http/packer"
   ssh_handshake_attempts = 20
   vm_name          = "ubuntu-baked-demo"
