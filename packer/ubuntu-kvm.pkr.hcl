@@ -39,12 +39,18 @@ source "qemu" "ubuntu" {
   iso_url          = var.iso_url
   iso_checksum     = var.iso_checksum
 
+  cd_files = [
+    "http/user-data",
+    "http/meta-data"
+  ]
+  cd_label = "cidata"
+
   http_directory   = "http"
 
 boot_wait = "15s"
 boot_command = [
   "c<wait>",
-  "linux /casper/vmlinuz autoinstall 'ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/' ---<enter><wait>",
+  "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=/cdrom/ ---<enter><wait>",
   "initrd /casper/initrd<enter><wait>",
   "boot<enter>"
 ]
