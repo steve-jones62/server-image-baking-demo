@@ -22,8 +22,11 @@ source "qemu" "ubuntu" {
   disk_size        = "8192"
   memory           = 2048
   cpus             = 2
-  headless         = false
-  qemuargs = [["-display","none"]]
+  headless         = true
+  qemuargs = [
+    ["-display","none"],
+    ["-serial", "stdio"]
+  ]
   communicator     = "ssh"
 #  ssh_username     = "packer"
   ssh_username     = "root"
@@ -41,7 +44,7 @@ source "qemu" "ubuntu" {
 boot_wait = "15s"
 boot_command = [
   "c<wait>",
-  "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ --- console=ttyS0",
+  "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ --- console=ttyS0,115200n8<enter><wait>",
   "initrd /casper/initrd<enter><wait>",
   "boot<enter>"
 ]
