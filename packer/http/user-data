@@ -14,6 +14,10 @@ autoinstall:
     - curtin in-target --target=/target -- chmod 700 /root/.ssh
     - curtin in-target --target=/target -- chmod 600 /root/.ssh/authorized_keys
     - curtin in-target --target=/target -- /bin/bash -c "printf 'PermitRootLogin yes\nPubkeyAuthentication yes\nPasswordAuthentication yes\n' > /etc/ssh/sshd_config.d/99-root.conf"
+    - curtin in-target --target=/target -- /bin/bash -c "ls -ld /root /root/.ssh >> /root/packer-debug.txt"
+    - curtin in-target --target=/target -- /bin/bash -c "ls -l /root/.ssh/authorized_keys >> /root/packer-debug.txt"
+    - curtin in-target --target=/target -- /bin/bash -c "cat /root/.ssh/authorized_keys >> /root/packer-debug.txt"
+    - curtin in-target --target=/target -- /bin/bash -c "cat /etc/ssh/sshd_config.d/99-root.conf >> /root/packer-debug.txt"
   locale: en_US.UTF-8
   keyboard:
     layout: us
