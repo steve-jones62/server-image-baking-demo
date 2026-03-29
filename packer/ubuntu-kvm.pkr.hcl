@@ -33,7 +33,7 @@ source "qemu" "ubuntu" {
   ssh_timeout      = "60m"
   ssh_handshake_timeout  = "15m"
   pause_before_connecting = "5m"
-  ssh_private_key_file = "http/packer"
+# ssh_private_key_file = "http/packer"
   ssh_handshake_attempts = 20
   vm_name          = "ubuntu-baked-demo"
   output_directory = "output/ubuntu-kvm"
@@ -49,10 +49,10 @@ source "qemu" "ubuntu" {
 
   http_directory   = "http"
 
-boot_wait = "15s"
+boot_wait = "30s"
 boot_command = [
   "c<wait>",
-  "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=/cdrom/ ---<enter><wait>",
+  "linux /casper/vmlinuz autoinstall ds=nocloud;s=/cdrom/ ---<enter><wait>",
   "initrd /casper/initrd<enter><wait>",
   "boot<enter>"
 ]
