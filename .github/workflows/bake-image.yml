@@ -11,7 +11,7 @@ on:
 jobs:
   bake:
 #    runs-on: ubuntu-latest
-    runs-on: [self-hosted, linux, x64, packer]
+    runs-on: [self-hosted, linux, x64, server-bake]
     timeout-minutes: 20
     steps:
       - name: Checkout
