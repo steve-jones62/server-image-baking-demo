@@ -20,6 +20,9 @@ jobs:
       - name: Check for KVM
         run: |
           echo "Checking /dev/kvm..."
+          ls -l /dev/kvm || echo "No KVM device"
+          echo "==== CPU flags ===="
+          egrep -c '(vmx|svm)' /proc/cpuinfo || true
           if [ -e /dev/kvm ]; then
             echo "use_kvm=true" >> $GITHUB_OUTPUT
           else
