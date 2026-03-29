@@ -2,11 +2,11 @@ name: Bake Server Image
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "main" ]
-    paths:
-      - ".github/workflows/bake-image.yml"
-      - "packer/**"
+#  push:
+#    branches: [ "main" ]
+#    paths:
+#     - ".github/workflows/bake-image.yml"
+#     - "packer/**"
 
 jobs:
   bake:
