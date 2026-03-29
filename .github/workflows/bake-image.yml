@@ -24,17 +24,9 @@ jobs:
             qemu-system-x86 \
             qemu-utils \
             unzip \
+            xorriso \
             curl
     
-      - name: Install system dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            qemu-system-x86 \
-            qemu-utils \
-            unzip \
-            curl
-
       - name: Setup Packer
         uses: hashicorp/setup-packer@v3
         with:
