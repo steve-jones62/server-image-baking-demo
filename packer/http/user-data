@@ -8,16 +8,12 @@ autoinstall:
   ssh:
     install-server: true
     allow-pw: true
-  late-commands:
-    - curtin in-target --target=/target -- mkdir -p /root/.ssh
-    - curtin in-target --target=/target -- /bin/bash -c "echo 'ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAACAQDZwrZj5NCm/bIVWKXlUUsKYJ6DvNcewfual8lFnjDhoP8teEH0aXC7K0x5hldyYJpOWfa4ta/TvTjJ4TVbT2hS62dcYYWymq3bjUfPF86mKU7Fc+DpD3hekAPLWybDxQOaRNHQDe9QVyTBVEaV1Fh6/ZnwtrD+NuOEkLXWugt8EpWSJ1nig8YSybOCTG3nSNqCY/dHe2K02paonzoxDuyKDlGIRGbwvN8wyh4bSZmVHUgA/hy6H8oYXNBdD0d3tb/LrhoOHOKMZHPh1QKvjUEKeNrl1RtfhjsfNkk4B1zJAK22JHLSjmLEHH4UQh7NfKqnZYc8KqQfJcBQZy4hKLcWUnD0AhjgMv42VWPNVPmcGPtO69I8MMDrH5ew/P3mgMIzGQePHoViHejE/eOFxD2jzMEmrdD+vvs3QKEcFD1Yq9nMDF2h3jiEa2s4jkcb/6ozImEw0FGWL2K/h78FoMT6C50iopRnexHIhGdJyOma4Yi/eCm6OizlqoDrcRRdbdnF8t6xpmca67hiydi+xfTVUXyXGboEiQR0767uBzQOVJaRSOQ+a0F9z+vbLfmY/hLLD2mCNOQzmSj4xIuraPrv//fZ3Y2gTktzxNFDIytp++QTTfkAmLz6zkSU1g6pw/sD8vF6AgKkJR0TsNclu8iPI4wigSWMAvbuFbuRYAh0yw== steve@SRJ-WIN11' > /root/.ssh/authorized_keys"
-    - curtin in-target --target=/target -- chmod 700 /root/.ssh
-    - curtin in-target --target=/target -- chmod 600 /root/.ssh/authorized_keys
-    - curtin in-target --target=/target -- /bin/bash -c "printf 'PermitRootLogin yes\nPubkeyAuthentication yes\nPasswordAuthentication yes\n' > /etc/ssh/sshd_config.d/99-root.conf"
-    - curtin in-target --target=/target -- /bin/bash -c "ls -ld /root /root/.ssh >> /root/packer-debug.txt"
-    - curtin in-target --target=/target -- /bin/bash -c "ls -l /root/.ssh/authorized_keys >> /root/packer-debug.txt"
-    - curtin in-target --target=/target -- /bin/bash -c "cat /root/.ssh/authorized_keys >> /root/packer-debug.txt"
-    - curtin in-target --target=/target -- /bin/bash -c "cat /etc/ssh/sshd_config.d/99-root.conf >> /root/packer-debug.txt"
+  user-data:
+    users:
+      - name: packer
+        group: [sudo]
+        shell: /bin/bash
+        sudo: ALL=(ALL) NOPASSWD:ALL
   locale: en_US.UTF-8
   keyboard:
     layout: us
