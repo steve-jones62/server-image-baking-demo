@@ -48,14 +48,14 @@ source "qemu" "ubuntu" {
 
   http_directory   = "http"
 
-boot_wait = "60s"
-boot_command = [
-  "c<wait>",
-  "linux /casper/vmlinuz autoinstall console=ttyS0,115200n8 ---<enter><wait5>",
-  "initrd /casper/initrd<enter><wait5>",
-  "boot<enter>"
-]
-
+#boot_wait = "60s"
+#boot_command = [
+#  "c<wait>",
+#  "linux /casper/vmlinuz autoinstall console=ttyS0,115200n8 ---<enter><wait5>",
+#  "initrd /casper/initrd<enter><wait5>",
+#  "boot<enter>"
+#]
+#
 }
 
 build {
