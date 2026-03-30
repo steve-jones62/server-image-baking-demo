@@ -32,6 +32,7 @@ source "qemu" "ubuntu" {
     ["-smbios", "type=1,serial=ds=nocloud;s=/cdrom/"]
   ]
   communicator     = "none"
+  shutdown_timeout = "20m"
 
   vm_name          = "ubuntu-baked-demo"
   output_directory = "output/ubuntu-kvm"
@@ -55,7 +56,6 @@ boot_command = [
   "boot<enter>"
 ]
 
-  shutdown_command = "shutdown -P now"
 }
 
 build {
