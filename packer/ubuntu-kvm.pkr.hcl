@@ -24,7 +24,7 @@ source "qemu" "ubuntu" {
   accelerator      = var.use_kvm ? "kvm" : "none"
   format           = "qcow2"
   disk_interface   = "virtio"
-  disk_size        = "8192"
+  disk_size        = "8192M"
   memory           = 2048
   cpus             = 2
   headless         = true
@@ -32,14 +32,7 @@ source "qemu" "ubuntu" {
     ["-smbios", "type=1,serial=ds=nocloud;s=/cdrom/"]
   ]
   communicator     = "none"
-  ssh_username     = "packer"
-  ssh_password     = "packer"
-  ssh_clear_authorized_keys = true
-  ssh_timeout      = "60m"
 
-  pause_before_connecting = "25m"
-# ssh_private_key_file = "http/packer"
-  ssh_handshake_attempts = 20
   vm_name          = "ubuntu-baked-demo"
   output_directory = "output/ubuntu-kvm"
 
@@ -57,7 +50,6 @@ source "qemu" "ubuntu" {
 boot_wait = "30s"
 boot_command = [
   "c<wait>",
-  # Adding systemd.mask=ssh to the kernel line -- an automated install does not need an interactive SSH session
   "linux /casper/vmlinuz autoinstall ---<enter><wait5>",
   "initrd /casper/initrd<enter><wait5>",
   "boot<enter>"
@@ -72,10 +64,6 @@ build {
   sources = [
     "source.qemu.ubuntu"
   ]
-
-  provisioner "shell" {
-    script = "scripts/baseline.sh"
-  }
 
   provisioner "shell-local" {
     inline = [
