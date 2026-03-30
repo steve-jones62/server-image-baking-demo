@@ -28,7 +28,9 @@ source "qemu" "ubuntu" {
   memory           = 2048
   cpus             = 2
   headless         = true
-
+  qemuargs = [
+    ["-smbios", "type=1,serial=ds=nocloud;s=/cdrom/"]
+  ]
   communicator     = "none"
   ssh_username     = "packer"
   ssh_password     = "packer"
@@ -56,7 +58,7 @@ boot_wait = "30s"
 boot_command = [
   "c<wait>",
   # Adding systemd.mask=ssh to the kernel line -- an automated install does not need an interactive SSH session
-  "linux /casper/vmlinuz autoinstall ds=nocloud s=/cdrom/ systemd.mask=ssh.service ---<enter><wait5>",
+  "linux /casper/vmlinuz autoinstall ---<enter><wait5>",
   "initrd /casper/initrd<enter><wait5>",
   "boot<enter>"
 ]
