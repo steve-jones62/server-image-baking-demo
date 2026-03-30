@@ -30,9 +30,10 @@ source "qemu" "ubuntu" {
   headless         = true
   qemuargs = [
     ["-smbios", "type=1,serial=ds=nocloud;s=/cdrom/"]
+    ["-serial", "file:serial.log"]
   ]
   communicator     = "none"
-  shutdown_timeout = "20m"
+  shutdown_timeout = "6m"
 
   vm_name          = "ubuntu-baked-demo"
   output_directory = "output/ubuntu-kvm"
@@ -51,7 +52,7 @@ source "qemu" "ubuntu" {
 boot_wait = "30s"
 boot_command = [
   "c<wait>",
-  "linux /casper/vmlinuz autoinstall ---<enter><wait5>",
+  "linux /casper/vmlinuz autoinstall console=ttyS0,115200n8 ---<enter><wait5>",
   "initrd /casper/initrd<enter><wait5>",
   "boot<enter>"
 ]
