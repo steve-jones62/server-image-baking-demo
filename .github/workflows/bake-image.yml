@@ -18,6 +18,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Check for KVM
+        id: kvm
         run: |
           echo "Checking /dev/kvm..."
           ls -l /dev/kvm || echo "No KVM device"
@@ -69,7 +70,7 @@ jobs:
           USE_KVM: ${{ steps.kvm.outputs.use_kvm }}
         run: |
           echo "Using KVM: $USE_KVM"
-          packer build -on-error=abort -var "use_kvm=$USE_KVM".
+          packer build -on-error=abort -var "use_kvm=$USE_KVM" .
 
       - name: Validate build outputs
         if: always()
