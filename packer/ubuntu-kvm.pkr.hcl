@@ -29,7 +29,7 @@ source "qemu" "ubuntu" {
   cpus             = 2
   headless         = true
 
-  communicator     = "ssh"
+  communicator     = "none"
   ssh_username     = "packer"
   ssh_password     = "packer"
   ssh_clear_authorized_keys = true
@@ -56,7 +56,7 @@ boot_wait = "30s"
 boot_command = [
   "c<wait>",
   # Adding systemd.mask=ssh to the kernel line -- an automated install does not need an interactive SSH session
-  "linux /casper/vmlinuz autoinstall ds=nocloud;s=/cdrom/ systemd.mask=ssh ---<enter><wait5>",
+  "linux /casper/vmlinuz autoinstall ds=nocloud s=/cdrom/ systemd.mask=ssh.service ---<enter><wait5>",
   "initrd /casper/initrd<enter><wait5>",
   "boot<enter>"
 ]
