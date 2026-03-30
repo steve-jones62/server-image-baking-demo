@@ -29,7 +29,7 @@ source "qemu" "ubuntu" {
   cpus             = 2
   headless         = true
   qemuargs = [
-    ["-smbios", "type=1,serial=ds=nocloud;s=/cdrom/"]
+    ["-smbios", "type=1,serial=ds=nocloud;s=/cdrom/"],
     ["-serial", "file:serial.log"]
   ]
   communicator     = "none"
