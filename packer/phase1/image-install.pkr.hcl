@@ -48,7 +48,7 @@ source "qemu" "ubuntu" {
 
   http_directory   = "http"
 
-boot_wait = "30s"
+boot_wait = "60s"
 boot_command = [
   "c<wait>",
   "linux /casper/vmlinuz autoinstall console=ttyS0,115200n8 ---<enter><wait5>",
