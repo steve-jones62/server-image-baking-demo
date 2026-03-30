@@ -78,16 +78,17 @@ jobs:
             .
 
       - name: Inspect Phase 1 qcow2
+        if: always()
         working-directory: packer/phase1
         run: |
           echo "==== Files in output ===="
-          find output -maxdepth 3 -type f | sort
+          find output -maxdepth 3 -type f | sort || true
 
           echo "==== qemu-img info ===="
-          qemu-img info output/ubuntu-kvm/ubuntu-baked-demo
+          qemu-img info output/ubuntu-kvm/ubuntu-baked-demo || true
 
           echo "==== virt-filesystems ===="
-          virt-filesystems --long -h --all -a output/ubuntu-kvm/ubuntu-baked-demo
+          virt-filesystems --long -h --all -a output/ubuntu-kvm/ubuntu-baked-demo || true
 
       - name: Gate on valid installed filesystem
         working-directory: packer/phase1
@@ -112,4 +113,5 @@ jobs:
             packer/phase1/*.manifest.json
             packer/phase1/packer-phase1.log
             packer/phase1/qcow-layout.txt
+            packer/phase1/serial.log
           retention-days: 14
