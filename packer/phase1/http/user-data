@@ -1,22 +1,29 @@
 #cloud-config
 autoinstall:
   version: 1
+  shutdown: poweroff
+
   identity:
     hostname: ubuntu-baked-demo
     username: packer
     password: "$6$rounds=4096$QruPoDxm8zCJwpgL$zlgZRSPxZlrF5Izk9Ko3htVQUOv1Xc4ec4f.sEQ7jfiVyYo9bRxXIpw5ZPKvXCwV0dgUu1Edi8rmxVIKshaEB."
+
   ssh:
     install-server: true
     allow-pw: true
+
   user-data:
     users:
       - name: packer
-        group: [sudo]
+        groups: [sudo]
         shell: /bin/bash
         sudo: ALL=(ALL) NOPASSWD:ALL
+
   locale: en_US.UTF-8
+  
   keyboard:
     layout: us
+  
   storage:
     layout:
       name: direct
