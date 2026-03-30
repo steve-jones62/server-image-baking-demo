@@ -5,14 +5,15 @@ on:
 #  push:
 #    branches: [ "main" ]
 #    paths:
-#     - ".github/workflows/bake-image.yml"
-#     - "packer/**"
+#      - ".github/workflows/bake-image.yml"
+#      - "packer/**"
 
 jobs:
   bake:
     runs-on: ubuntu-latest
 #    runs-on: [self-hosted, linux, x64, server-bake]
     timeout-minutes: 60
+
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -29,12 +30,12 @@ jobs:
           else
             echo "use_kvm=false" >> $GITHUB_OUTPUT
           fi
-                    
+
       - name: Enable KVM
         run: |
           echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
           sudo udevadm control --reload-rules
-          sudo udevadm trigger --name-match=kvm 
+          sudo udevadm trigger --name-match=kvm
 
       - name: Install system dependencies
         run: |
@@ -44,8 +45,9 @@ jobs:
             qemu-utils \
             unzip \
             xorriso \
-            curl
-    
+            curl \
+            libguestfs-tools
+
       - name: Setup Packer
         uses: hashicorp/setup-packer@v3
         with:
@@ -54,43 +56,60 @@ jobs:
       - name: Verify Packer
         run: packer version
 
-      - name: Packer init
-        working-directory: packer
+      - name: Packer init Phase 1
+        working-directory: packer/phase1
         run: packer init .
 
-      - name: Packer validate
-        working-directory: packer
-        run: packer validate .
-      
-      - name: Packer build
-        working-directory: packer
+      - name: Packer validate Phase 1
+        working-directory: packer/phase1
+        run: packer validate -var "use_kvm=${{ steps.kvm.outputs.use_kvm }}" .
+
+      - name: Packer build Phase 1
+        working-directory: packer/phase1
         env:
           PACKER_LOG: "1"
-          PACKER_LOG_PATH: "packer.log"
+          PACKER_LOG_PATH: "packer-phase1.log"
           USE_KVM: ${{ steps.kvm.outputs.use_kvm }}
         run: |
           echo "Using KVM: $USE_KVM"
-          packer build -on-error=abort -var "use_kvm=$USE_KVM" .
+          packer build \
+            -on-error=abort \
+            -var "use_kvm=$USE_KVM" \
+            .
 
-      - name: Validate build outputs
-        if: always()
-        working-directory: packer
-        run: bash scripts/validate.sh
-
-      - name: Show Packer log tail
-        if: always()
-        working-directory: packer
+      - name: Inspect Phase 1 qcow2
+        working-directory: packer/phase1
         run: |
-          echo "==== Last 200 lines of packer.log ===="
-          tail -n 200 packer.log || true
+          echo "==== Files in output ===="
+          find output -maxdepth 3 -type f | sort
 
-      - name: Upload baked image artifacts
+          echo "==== qemu-img info ===="
+          qemu-img info output/ubuntu-kvm/ubuntu-baked-demo
+
+          echo "==== virt-filesystems ===="
+          virt-filesystems --long -h --all -a output/ubuntu-kvm/ubuntu-baked-demo
+
+      - name: Gate on valid installed filesystem
+        working-directory: packer/phase1
+        run: |
+          virt-filesystems --long -h --all -a output/ubuntu-kvm/ubuntu-baked-demo | tee qcow-layout.txt
+          grep -Eq 'ext4|xfs|btrfs' qcow-layout.txt
+
+      - name: Show Phase 1 Packer log tail
+        if: always()
+        working-directory: packer/phase1
+        run: |
+          echo "==== Last 200 lines of packer-phase1.log ===="
+          tail -n 200 packer-phase1.log || true
+
+      - name: Upload Phase 1 artifacts
         if: always()
         uses: actions/upload-artifact@v4
         with:
-          name: baked-server-image
+          name: baked-server-image-phase1
           path: |
-            packer/output/**
-            packer/*.manifest.json
-            packer/packer.log
+            packer/phase1/output/**
+            packer/phase1/*.manifest.json
+            packer/phase1/packer-phase1.log
+            packer/phase1/qcow-layout.txt
           retention-days: 14
