@@ -32,7 +32,7 @@ source "qemu" "ubuntu" {
     ["-serial", "file:serial.log"]
   ]
   communicator     = "none"
-  shutdown_timeout = "10m"
+  shutdown_timeout = "15m"
 
   vm_name          = "ubuntu-baked-demo"
   output_directory = "output/ubuntu-kvm"
@@ -55,7 +55,7 @@ boot_command = [
   "initrd /casper/initrd<enter><wait5>",
   "boot<enter>"
 ]
-shutdown_timeout = "15m"
+
 }
 
 build {
