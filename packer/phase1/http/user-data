@@ -19,7 +19,7 @@ autoinstall:
         groups: [sudo]
         shell: /bin/bash
         sudo: ALL=(ALL) NOPASSWD:ALL
-        lock_passwd: false
+        #lock_passwd: false
 
   locale: en_US.UTF-8
   
