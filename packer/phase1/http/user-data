@@ -2,7 +2,7 @@
 autoinstall:
   version: 1
   shutdown: poweroff
-  interactive-sections: []
+  #interactive-sections: []
 
   identity:
     hostname: ubuntu-baked-demo
