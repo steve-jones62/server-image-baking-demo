@@ -51,7 +51,7 @@ source "qemu" "ubuntu" {
 boot_wait = "28s"
 boot_command = [
   "c<wait3>",
-  "linux /casper/vmlinuz autoinstall ds=nocloud quiet console=ttyS0,115200n8 ---<enter><wait5>",
+  "linux /casper/vmlinuz autoinstall ds=nocloud console=ttyS0,115200n8 ---<enter><wait5>",
   "initrd /casper/initrd<enter><wait5>",
   "boot<enter>"
 ]
