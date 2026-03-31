@@ -2,6 +2,7 @@
 autoinstall:
   version: 1
   shutdown: poweroff
+  interactive-sections: []
 
   identity:
     hostname: ubuntu-baked-demo
@@ -18,6 +19,7 @@ autoinstall:
         groups: [sudo]
         shell: /bin/bash
         sudo: ALL=(ALL) NOPASSWD:ALL
+        lock_passwd: false
 
   locale: en_US.UTF-8
   
